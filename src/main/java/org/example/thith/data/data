@@ -1,0 +1,27 @@
+-- Creating the database
+CREATE DATABASE cinema_promotion;
+USE cinema_promotion;
+
+-- Creating the promotion table
+CREATE TABLE promotion (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    start_date DATE NOT NULL,
+    end_date DATE NOT NULL,
+    discount_amount DECIMAL(10, 2) NOT NULL,
+    details TEXT,
+    CONSTRAINT chk_discount_amount CHECK (discount_amount >= 10000),
+    CONSTRAINT chk_date_order CHECK (end_date >= DATE_ADD(start_date, INTERVAL 1 DAY))
+);
+
+INSERT INTO promotion (title, start_date, end_date, discount_amount, details) VALUES
+('Khuyến mãi Mùa Hè Rực Rỡ', '2025-06-01', '2025-06-30', 15000.00, 'Giảm giá đặc biệt cho các suất chiếu phim vào mùa hè'),
+('Chương trình Tết Nguyên Đán', '2025-12-15', '2026-01-15', 20000.00, 'Ưu đãi lớn cho các phim Tết tại rạp'),
+('Khuyến mãi Cuối Tuần Vui Vẻ', '2025-05-24', '2025-05-31', 12000.00, 'Giảm giá vé vào các ngày cuối tuần'),
+('Ngày Phim Kinh Dị', '2025-07-01', '2025-07-15', 18000.00, 'Ưu đãi cho các bộ phim kinh dị vào tháng 7'),
+('Khuyến mãi Gia Đình', '2025-08-01', '2025-08-15', 25000.00, 'Giảm giá cho vé gia đình vào mùa hè'),
+('Chương trình Phim Hàn Quốc', '2025-09-01', '2025-09-30', 13000.00, 'Ưu đãi đặc biệt cho các phim Hàn Quốc'),
+('Khuyến mãi Sinh Nhật Rạp', '2025-10-01', '2025-10-10', 16000.00, 'Giảm giá chào mừng sinh nhật rạp chiếu phim');
+
+
+

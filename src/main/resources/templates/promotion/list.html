@@ -1,10 +1,75 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>Danh sách khuyến mãi</title>
+    <link rel="stylesheet" href="/css/list.css">
 </head>
 <body>
-$END$
+<h1>Danh sách khuyến mãi</h1>
+
+<!-- Success/Error/Info Messages -->
+<div th:if="${param.success != null}" style="color: green; margin-bottom: 10px;">
+    <p th:text="${param.success} ?: 'Thông báo thành công'"></p>
+</div>
+<div th:if="${error != null}" class="error">
+    <p th:text="${error} ?: 'Có lỗi xảy ra'"></p>
+</div>
+<div th:if="${info != null}" class="info">
+    <p th:text="${info}"></p>
+</div>
+
+<!-- Search Form -->
+<div class="search-container">
+    <a th:href="@{/promotions/add}" class="btn">Thêm khuyến mãi</a>
+    <form th:action="@{/promotions/search}" method="get">
+        <label for="discountAmount">Mức giảm giá:</label>
+        <input type="number" id="discountAmount" name="discountAmount" step="0.01">
+        <label for="startDate">Thời gian bắt đầu:</label>
+        <input type="date" id="startDate" name="startDate">
+        <label for="endDate">Thời gian kết thúc:</label>
+        <input type="date" id="endDate" name="endDate">
+        <button type="submit">Tìm</button>
+    </form>
+</div>
+
+<!-- Promotion Table -->
+<table>
+    <thead>
+    <tr style="background-color: #ffebee;">
+        <th>Tiêu đề</th>
+        <th>Thời gian bắt đầu</th>
+        <th>Thời gian kết thúc</th>
+        <th>Mức giảm giá</th>
+        <th>Chi tiết</th>
+        <th>Sửa</th>
+        <th>Xóa</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="promotion : ${promotions}">
+        <td th:text="${promotion.title}"></td>
+        <td th:text="${#temporals.format(promotion.startDate, 'yyyy-MM-dd')}"></td>
+        <td th:text="${#temporals.format(promotion.endDate, 'yyyy-MM-dd')}"></td>
+        <td th:text="${#numbers.formatDecimal(promotion.discountAmount, 0, 'COMMA', 2, 'POINT')} + ' VNĐ'"></td>
+        <td th:text="${promotion.details}"></td>
+        <td class="actions">
+            <a th:href="@{/promotions/edit/{id}(id=${promotion.id})}" class="edit">Sửa</a>
+        </td>
+        <td class="actions">
+            <a th:href="@{/promotions/delete/{id}(id=${promotion.id})}"
+               class="delete"
+               th:data-title="${promotion.title}"
+               onclick="return confirmDelete(this.getAttribute('data-title'))">Xóa</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<script>
+    function confirmDelete(title) {
+        return confirm(`Bạn có muốn xóa chương trình khuyến mãi "${title}"?`);
+    }
+</script>
 </body>
 </html>

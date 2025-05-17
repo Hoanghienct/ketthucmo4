@@ -1,10 +1,41 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>Thêm khuyến mãi</title>
+    <link rel="stylesheet" href="/css/style.css">
+
 </head>
 <body>
-$END$
+<h1>Giao diện minh họa:</h1>
+
+<form th:action="@{/promotions/add}" th:object="${promotion}" method="post">
+    <div class="form-group">
+        <label>Tiêu đề *</label>
+        <input type="text" th:field="*{title}">
+        <span th:errors="*{title}" class="error"></span>
+    </div>
+    <div class="form-group">
+        <label>Thời gian bắt đầu *</label>
+        <input type="date" th:field="*{startDate}">
+        <span th:errors="*{startDate}" class="error"></span>
+    </div>
+    <div class="form-group">
+        <label>Thời gian kết thúc *</label>
+        <input type="date" th:field="*{endDate}">
+        <span th:errors="*{endDate}" class="error"></span>
+    </div>
+    <div class="form-group">
+        <label>Mức giảm giá *</label>
+        <input type="number" step="0.01" th:field="*{discountAmount}">
+        <span th:errors="*{discountAmount}" class="error"></span>
+    </div>
+    <div class="form-group">
+        <label>Chi tiết</label>
+        <textarea th:field="*{details}"></textarea>
+    </div>
+    <button type="submit" class="btn">Thêm mới</button>
+    <a th:href="@{/promotions}" class="btn">Quay lại</a>
+</form>
 </body>
 </html>
